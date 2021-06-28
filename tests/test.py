@@ -3,13 +3,13 @@ from uuid import uuid4
 
 import pytest
 
-from pyramid_api.api import (
+from ..pyramid_api.api import (
     PasswordGrant,
     TokenGrant,
     API as PyramidAPI
 )
 
-from pyramid_api.api_types import (
+from ..pyramid_api.api_types import (
     AccessType,
     ContentFolder,
     ClientLicenseType,
@@ -29,7 +29,7 @@ from pyramid_api.api_types import (
 LOG = logging.getLogger(__name__)
 
 # Credentials / Options
-DOMAIN = 'http://localhost:8181'
+DOMAIN = 'http://localhost:9081'
 USER = 'admin'
 # PW = 'wrong'
 PW = 'admin'
@@ -57,8 +57,8 @@ TENANT_OBJ: TenantData = None
 
 def test__grants():
     global API
-    assert(isinstance(PasswordGrant(DOMAIN, USER, PW).get_api(), PyramidAPI))
-    assert(isinstance(API := TokenGrant(DOMAIN, TOKEN).get_api(), PyramidAPI))
+    assert(isinstance(API := PasswordGrant(DOMAIN, USER, PW).get_api(), PyramidAPI))
+    # assert(isinstance(API := TokenGrant(DOMAIN, TOKEN).get_api(), PyramidAPI))
 
 
 def test__get_user():

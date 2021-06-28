@@ -340,7 +340,7 @@ class API:
     def findServerByName(self, name: str, query_type: SearchMatchType = 1
         ) -> List[MaterializedItemObject]:
         
-        return _call_expect_query_res(
+        return self._call_expect_query_res(
             '/API2/dataSources/findServerByName',
             {
                 'auth': self.token,
@@ -367,9 +367,10 @@ class API:
             del body['rolesIds']
 
         return self._call_api(
-        '/API2/dataSources/importModel', {
-            'modelApiObject': body
-        }
+            '/API2/dataSources/importModel', {
+                'modelApiObject': body
+            }
+        )
         
 
     ##
