@@ -1,6 +1,8 @@
-import base64
 import copy
 from enum import IntEnum
+
+from dataclasses_json import DataClassJsonMixin
+
 
 from dataclasses import (
     dataclass,
@@ -22,10 +24,12 @@ class ClientLicenseType(IntEnum):
     viewer = 100
     professional = 200    
 
+
 class AdminType(IntEnum):
     none = 0
     domainadmin = 1
     enterpriseadmin = 2
+
 
 class UserStatusID(IntEnum):
     disabled = 0
@@ -130,6 +134,7 @@ class ContentType(IntEnum):
     publisher = 6
     storyboard = 8
 
+
 # NOT THE SAME AS ABOVE!?!?!?!?
 class ContentItemObjectType(IntEnum):
     asset = 0
@@ -172,12 +177,13 @@ class ValidRootFolderType(IntEnum):
 
 
 @dataclass
-class ItemId:
+class ItemId(DataClassJsonMixin):
     id: str
     name: str = None
 
+
 @dataclass
-class Role:
+class Role(DataClassJsonMixin):
     tenantId: str
     roleName: str
     roleId: str = None
@@ -188,7 +194,7 @@ class Role:
     
 
 @dataclass
-class User:
+class User(DataClassJsonMixin):
     tenantId: str
     userName: str
     roleIds: List[str] = default_field([])
@@ -213,7 +219,7 @@ class User:
 
 
 @dataclass
-class Server:
+class Server(DataClassJsonMixin):
     port: int
     serverName: str
     id: Optional[str] = None
@@ -234,13 +240,15 @@ class Server:
     overlayPyramidSecurity: bool = False
     serverIpAndInstanceName: Optional[str] = None
 
+
 @dataclass
-class TenantSettings:
+class TenantSettings(DataClassJsonMixin):
     showGroupFolder: Optional[bool] = None
     allowWebhookChannels: Optional[bool] = None
 
+
 @dataclass
-class TenantData:
+class TenantData(DataClassJsonMixin):
     id: Optional[str]
     name: Optional[str]
     viewerSeats: Optional[int] = 0
@@ -257,7 +265,7 @@ class TenantData:
 
 
 @dataclass
-class NewTenant:
+class NewTenant(DataClassJsonMixin):
     id: str
     name: str
     viewerSeats: int = 0
@@ -265,9 +273,8 @@ class NewTenant:
     showGroupFolder: bool = False
 
 
-
 @dataclass
-class NotificationIndicatorsResult:
+class NotificationIndicatorsResult(DataClassJsonMixin):
     models: Optional[int]
     subscriptions: Optional[int]
     alerts: Optional[int]
@@ -276,14 +283,14 @@ class NotificationIndicatorsResult:
 
 
 @dataclass
-class NewFolder:
+class NewFolder(DataClassJsonMixin):
     parentFolderId: str
     folderName: str
     folderId: Optional[str] = None
 
 
 @dataclass
-class SearchParams:
+class SearchParams(DataClassJsonMixin):
     searchString: str
     filterTypes: List[ContentType]
     searchMatchType: SearchMatchType = SearchMatchType.contains
@@ -300,7 +307,7 @@ class SearchParams:
 
 
 @dataclass
-class ConnectionStringProperties:
+class ConnectionStringProperties(DataClassJsonMixin):
     id: Optional[str] = None
     modelId: Optional[str] = None
     modelName: Optional[str] = None
@@ -313,8 +320,9 @@ class ConnectionStringProperties:
     modelParamsStatus: Optional[str] = None
     securityHash: Optional[str] = None
 
+
 @dataclass
-class ContentItem:
+class ContentItem(DataClassJsonMixin):
     id: Optional[str]
     parentId: Optional[str]
     caption: Optional[str]
@@ -329,21 +337,21 @@ class ContentItem:
 
 
 @dataclass
-class ModifiedItemsResult:
+class ModifiedItemsResult(DataClassJsonMixin):
     success: bool
     modifiedList: List[ItemId] = default_field([])
     errorMessage: str = None
 
 
 @dataclass
-class MaterializedItemObject:
+class MaterializedItemObject(DataClassJsonMixin):
     itemId: str
     itemCaption: str = None
     itemType: MaterializedItemType = 0
 
 
 @dataclass
-class PieApiObject:
+class PieApiObject(DataClassJsonMixin):
     rootFolderId: str
     fileZippedData: str # base64 encoded string of the file
     clashDefaultOption: int = 1
@@ -358,6 +366,6 @@ class PieApiObject:
 
 
 @dataclass
-class ImportApiResultObject:
+class ImportApiResultObject(DataClassJsonMixin):
     importDscMap: List[Dict] = default_field([])
     failedItems: List[Dict] = default_field([])
