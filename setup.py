@@ -5,7 +5,10 @@ setup(
     author_email="shawn.sarwar@pyramidanalytics.com",
     description='''An wrapper around PA REST APIs''',
     version='1.0.0',
-    setup_requires=['pytest-runner', 'requests'],
+    packages=['pyramid_api'],
+    # requires=['dataclasses-json', 'requests'],
+    setup_requires=['pytest','pytest-runner', 'requests'],
     url='https://github.com/shawnsarwar/pyramid_analytics_api',
     keywords=['REST', 'pyramidanalytics', 'pyramid', 'analytics'],
     classifiers=[]
+)
