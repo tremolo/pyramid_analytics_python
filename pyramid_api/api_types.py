@@ -1,11 +1,15 @@
 import copy
 from enum import IntEnum
 
+from dataclasses_json import DataClassJsonMixin
+
+
 from dataclasses import (
     dataclass,
     field
 )
 from typing import (
+    Any,
     Dict,
     List,
     Optional
@@ -19,6 +23,12 @@ class ClientLicenseType(IntEnum):
     none = 0
     viewer = 100
     professional = 200    
+
+
+class AdminType(IntEnum):
+    none = 0
+    domainadmin = 1
+    enterpriseadmin = 2
 
 
 class UserStatusID(IntEnum):
@@ -95,12 +105,43 @@ class AccessType(IntEnum):
     admin = 4
 
 
+class SearchRootFolderType(IntEnum):
+    private = 0
+    public = 1
+    group = 2
+    oneoff = 3
+    deletedcontent = 4
+    crosstenant = 5
+    recent = 6
+    favorite = 7
+
+
 class SearchMatchType(IntEnum):
     contains = 0
     notcontains = 1
     equals = 2
     startswith = 3
     endswith = 4
+
+
+class ContentType(IntEnum):
+    none = 0
+    asset = 1
+    calculation = 2
+    datadiscovery = 3
+    etlflow = 4
+    folder = 5
+    publisher = 6
+    storyboard = 8
+
+
+# NOT THE SAME AS ABOVE!?!?!?!?
+class ContentItemObjectType(IntEnum):
+    asset = 0
+    publisher = 1
+    storyboard = 2
+    calculation = 3
+    datadiscovery = 4
 
 
 class MaterializedItemType(IntEnum):
@@ -113,28 +154,47 @@ class MaterializedItemType(IntEnum):
     model = 6
     output = 7
 
+
+class RoleAssignmentType(IntEnum):
+    usedefaultbehavior = 0
+    forcepackageroles = 1
+    forceexternalroles = 2
+    forceparentroles = 3
+
+
+# subclassing enums only works in 3.8+ so we'll be redundant
 class MaterializedRoleAssignmentType(IntEnum):
     usedefaultbehavior = 0
     forcepackageroles = 1
     forceexternalroles = 2
     forceparentroles = 3
 
+
+class ValidRootFolderType(IntEnum):
+    private = 0
+    public = 1
+    group = 2
+
+
 @dataclass
-class ItemId:
+class ItemId(DataClassJsonMixin):
     id: str
     name: str = None
 
+
 @dataclass
-class Role:
+class Role(DataClassJsonMixin):
     tenantId: str
     roleName: str
     roleId: str = None
     roleSettings: str = None
     isHidden: bool = False
+    isPrivate: bool = False
+    isGroupRole: bool = False
     
 
 @dataclass
-class User:
+class User(DataClassJsonMixin):
     tenantId: str
     userName: str
     roleIds: List[str] = default_field([])
@@ -146,7 +206,7 @@ class User:
     email: Optional[str] = None
     phone: Optional[str] = None
     proxyAccount: Optional[str] = None
-    adminType: int = 0
+    adminType: AdminType = 0
     statusID: int = 1
     createdDate: Optional[int] = 0
     lastLoginDate: Optional[int] = 0
@@ -159,7 +219,7 @@ class User:
 
 
 @dataclass
-class Server:
+class Server(DataClassJsonMixin):
     port: int
     serverName: str
     id: Optional[str] = None
@@ -180,13 +240,15 @@ class Server:
     overlayPyramidSecurity: bool = False
     serverIpAndInstanceName: Optional[str] = None
 
+
 @dataclass
-class TenantSettings:
+class TenantSettings(DataClassJsonMixin):
     showGroupFolder: Optional[bool] = None
     allowWebhookChannels: Optional[bool] = None
 
+
 @dataclass
-class TenantData:
+class TenantData(DataClassJsonMixin):
     id: Optional[str]
     name: Optional[str]
     viewerSeats: Optional[int] = 0
@@ -203,41 +265,107 @@ class TenantData:
 
 
 @dataclass
-class NewTenant:
+class NewTenant(DataClassJsonMixin):
     id: str
     name: str
     viewerSeats: int = 0
     proSeats: int = 0
     showGroupFolder: bool = False
 
+
 @dataclass
-class NotificationIndicatorsResult:
+class NotificationIndicatorsResult(DataClassJsonMixin):
     models: Optional[int]
     subscriptions: Optional[int]
     alerts: Optional[int]
     publications: Optional[int]
     conversations: Optional[int]
 
+
 @dataclass
-class ContentFolder:
+class NewFolder(DataClassJsonMixin):
+    parentFolderId: str
+    folderName: str
+    folderId: Optional[str] = None
+
+
+@dataclass
+class SearchParams(DataClassJsonMixin):
+    searchString: str
+    filterTypes: List[ContentType]
+    searchMatchType: SearchMatchType = SearchMatchType.contains
+    searchRootFolderType: SearchRootFolderType = SearchRootFolderType.public
+    startCreatedDate: Optional[str] = None
+    endCreatedDate: Optional[str] = None
+    startModifiedDate: Optional[str] = None
+    endModifiedDate: Optional[str] = None
+    server: Optional[str] = None
+    model: Optional[str] = None
+    dataBase: Optional[str] = None
+    isAdvancedSearch: bool = False
+    folderPathToSearch: Optional[str] = None
+
+
+@dataclass
+class ConnectionStringProperties(DataClassJsonMixin):
+    id: Optional[str] = None
+    modelId: Optional[str] = None
+    modelName: Optional[str] = None
+    serverId: Optional[str] = None
+    serverName: Optional[str] = None
+    dataBaseId: Optional[str] = None
+    dataBaseName: Optional[str] = None
+    connectionStringType: Optional[ServerType] = 0
+    isDynamicModel: Optional[bool] = False
+    modelParamsStatus: Optional[str] = None
+    securityHash: Optional[str] = None
+
+
+@dataclass
+class ContentItem(DataClassJsonMixin):
     id: Optional[str]
     parentId: Optional[str]
     caption: Optional[str]
     itemType: Optional[int]
-    contentType: Optional[int]
+    contentType: Optional[ContentType]
     createdBy: Optional[str] = None
     createdDate: Optional[int] = None
     version: Optional[str] = None
+    modifiedDate: Optional[str] = None
+    tenantId: Optional[str] = None
+    description: Optional[str] = None
 
 
 @dataclass
-class ModifiedItemsResult:
+class ModifiedItemsResult(DataClassJsonMixin):
     success: bool
     modifiedList: List[ItemId] = default_field([])
     errorMessage: str = None
 
+
 @dataclass
-class MaterializedItemObject:
+class MaterializedItemObject(DataClassJsonMixin):
     itemId: str
     itemCaption: str = None
     itemType: MaterializedItemType = 0
+
+
+@dataclass
+class PieApiObject(DataClassJsonMixin):
+    rootFolderId: str
+    fileZippedData: str # base64 encoded string of the file
+    clashDefaultOption: int = 1
+    rolesAssignmentType: RoleAssignmentType = RoleAssignmentType.forceparentroles
+    roleIds: List[str] = None  # only relevent to RoleAssignmentType.ForceExternalRoles
+
+    @staticmethod
+    def dataFromPath(path_: str):
+        with open(path_, 'rb') as f:
+            bytes_ =  f.read()
+            return bytes_.decode('ascii') 
+
+
+@dataclass
+class ImportApiResultObject(DataClassJsonMixin):
+    importDscMap: List[Dict] = default_field([])
+    failedItems: List[Dict] = default_field([])
