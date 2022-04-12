@@ -19,6 +19,7 @@ from .api_types import (
     ContentType,
     ContentItemObjectType,
     ImportApiResultObject,
+    ItemId,
     NotificationIndicatorsResult,
     MaterializedItemObject,
     MaterializedRoleAssignmentType,
@@ -153,6 +154,24 @@ class API:
             }
         )
         return [User(**i) for i in res['data']]
+
+    def getUsersByRole(self, roleId: str) -> List[User]:
+        res = self._call_api(
+            '/API2/access/getUsersByRole',
+            {
+                'auth': self.token,
+                'roleId': roleId
+            }
+        )
+        return [User(**i) for i in res['data']]
+
+    def getAllRoles(self) -> List[ItemId]:
+        res = self._call_api(
+            '/API2/access/getAllRoles',
+            {
+                'auth': self.token            }
+        )
+        return [ItemId(**i) for i in res['data']]
 
     ##
     # --- Auth ---
