@@ -362,6 +362,17 @@ class API:
             }
         )
 
+    def deleteRole(
+        self,
+        roleId: str
+    ) -> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/access/deleteRole',
+            {
+                'auth': self.token,
+                'roleId': roleId
+            }
+        )
     ## User
 
     def createUserDb(self, user: User) -> ModifiedItemsResult:
