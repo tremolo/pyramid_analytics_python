@@ -384,7 +384,17 @@ class API:
                 'user': self.__ignore_nulls(asdict(user))
         })
 
-
+    def deleteUser(
+        self,
+        userId: str
+    ) -> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/access/deleteUser',
+            {
+                'auth': self.token,
+                'userId': userId
+            }
+        )
     ## Server
     def createDataServer(self, server: Server) -> ModifiedItemsResult:
         return self._call_expect_modified(
