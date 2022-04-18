@@ -19,6 +19,7 @@ from .api_types import (
     ContentType,
     ContentItemObjectType,
     ImportApiResultObject,
+    ItemId,
     NotificationIndicatorsResult,
     MaterializedItemObject,
     MaterializedRoleAssignmentType,
@@ -374,14 +375,14 @@ class API:
             }
         )
 
-    def getAllRoles(self) -> Role:    
+    def getAllRoles(self) -> List[ItemId]:    
         res = self._call_api(
             '/API2/access/getAllRoles',
             {
                 'auth': self.token
             }
         )
-        return Role(**res['data'])
+        return [ItemId(**i) for i in res['data']]
 
     ## User
 
