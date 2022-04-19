@@ -428,6 +428,18 @@ class API:
                 'serverData': self.__ignore_nulls(asdict(server))
         })
 
+    def deleteDataSource(
+        self,
+        sourceId: str
+    ) -> ModifiedItemsResult:    
+        return self._call_expect_modified(
+            '/API2/dataSources/deleteDataSource',
+            {
+                'auth': self.token,
+                'sourceId': sourceId
+            }
+        )
+
     def addRoleToServer(self, server_id: str, role_id: str, access_type: AccessType) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToServer',
