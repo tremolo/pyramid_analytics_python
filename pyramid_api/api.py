@@ -612,6 +612,19 @@ class API:
                 }
         })
 
+
+    def deleteDataBase(
+        self,
+        databaseId: str
+    ) -> ModifiedItemsResult:    
+        return self._call_expect_modified(
+            '/API2/dataSources/deleteDataBase',
+            {
+                'auth': self.token,
+                'databaseId': databaseId
+            }
+        )
+
     ##
     # --- Tasks ---
     ##
