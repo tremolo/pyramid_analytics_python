@@ -229,6 +229,22 @@ class API:
             }
         )
 
+    def purgeContentItems(self, itemIds: List[str]) -> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/content/purgeContentItems', {
+                'auth': self.token,
+                'itemIds': itemIds
+            }
+        )
+
+
+    def softDeleteContentItems(self, itemIds: List[str]) -> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/content/softDeleteContentItems', {
+                'auth': self.token,
+                'itemIds': itemIds
+            }
+        )
 
     def findContentItem(self, params: SearchParams) -> List[ContentItem]:
         res = self._call_api(
