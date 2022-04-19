@@ -1,5 +1,6 @@
 import copy
 from enum import IntEnum
+from operator import truediv
 
 from dataclasses_json import DataClassJsonMixin
 
@@ -14,6 +15,8 @@ from typing import (
     List,
     Optional
 )
+
+from __future__ import annotations
 
 def default_field(obj):
     return field(default_factory=lambda: copy.copy(obj))
@@ -364,9 +367,58 @@ class PieApiObject(DataClassJsonMixin):
             bytes_ =  f.read()
             return bytes_.decode('ascii') 
 
+@dataclass
+class RootFolderType(IntEnum):
+    private = 0
+    public = 1
+    group = 2
+    oneoff = 3
+    privatedummy = 4
+    tenantsrootfolderdummy = 5
+    tenantdummy = 6
+    deletedcontent = 7
+    crosstenant = 8
+    recent = 9
+    favorites = 10
+
+@dataclass
+class ConnectionStringData(DataClassJsonMixin):
+    serverId: Optional[str] = None
+    dataBaseName: Optional[str] = None
+    model: Optional[str] = None
+    serverName: Optional[str] = None
+    dynamicModel: Optional[bool] = False
+    uniqueKey: Optional[str] = None
+
+
+@dataclass 
+class ImportDscMapItem(DataClassJsonMixin):
+    connectionStringProperties: ConnectionStringProperties
+    needsToPerformDsc: bool = True
+
+@dataclass
+class RelatedItemData(DataClassJsonMixin):
+    name: str
+    itemId: str
+    contentType: Optional[ContentType] = ContentType.none
+    children: List[RelatedItemData] = default_field([])
+    rootFolderType: Optional[RootFolderType] = RootFolderType.privatedummy
+    hasWriteAccess: Optional[bool] = False
+    numberOfUsages: Optional[int] = 0
+    sourceItemId: Optional[str] = None
+    level: int = 0
+    createdDate: Optional[int] = None
+    createdBy: Optional[str] = None
+    dataSourceProperties: ConnectionStringData = default_field({})
+    folderPath: Optional[str] = None
+    tenantId: Optional[str] = None
+    securityHash: Optional[str] = None
+    folderId: Optional[str] = None
+    lockedByUser: Optional[str] = None
+    itemIdAsString: Optional[str] = None
 
 @dataclass
 class ImportApiResultObject(DataClassJsonMixin):
-    importDscMap: List[Dict] = default_field([])
-    failedItems: List[Dict] = default_field([])
-    itemsIds: List[Dict] = default_field([])
+    importDscMap: Dict[str, List[ImportDscMapItem]] = default_field({})
+    failedItems: List[RelatedItemData] = default_field([])
+    itemsIds: Dict[str, str] = default_field({})
