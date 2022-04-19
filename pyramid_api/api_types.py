@@ -418,8 +418,16 @@ class RelatedItemData(DataClassJsonMixin):
     lockedByUser: Optional[str] = None
     itemIdAsString: Optional[str] = None
 
+    def __post_init__(self):
+        self.dataSourceProperties = ConnectionStringData(**self.dataSourceProperties)
+        self.children = [RelatedItemData(**i) for i in self.children]
+
 @dataclass
 class ImportApiResultObject(DataClassJsonMixin):
     importDscMap: Dict[str, List[ImportDscMapItem]] = default_field({})
     failedItems: List[RelatedItemData] = default_field([])
     itemsIds: Dict[str, str] = default_field({})
+
+    def __post_init__(self):
+        self.importDscMap = {k: ImportDscMapItem(**v) for k, v in self.importDscMap} 
+        self.failedItems = [RelatedItemData(**i) for i in self.failedItems]
