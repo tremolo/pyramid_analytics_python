@@ -155,6 +155,16 @@ class API:
         )
         return [User(**i) for i in res['data']]
 
+    def getUsersByRole(self, roleId) -> List[User]:
+        res = self._call_api(
+            '/API2/access/getUsersByRole',
+            {
+                'auth': self.token,
+                'roleId': roleId
+            }
+        )
+        return [User(**i) for i in res['data']]
+
     ##
     # --- Auth ---
     ##
