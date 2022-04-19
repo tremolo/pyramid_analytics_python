@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import copy
 from enum import IntEnum
 from operator import truediv
@@ -16,7 +18,6 @@ from typing import (
     Optional
 )
 
-from __future__ import annotations
 
 def default_field(obj):
     return field(default_factory=lambda: copy.copy(obj))
