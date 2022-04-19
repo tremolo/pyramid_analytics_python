@@ -369,3 +369,4 @@ class PieApiObject(DataClassJsonMixin):
 class ImportApiResultObject(DataClassJsonMixin):
     importDscMap: List[Dict] = default_field([])
     failedItems: List[Dict] = default_field([])
+    itemsIds: List[Dict] = default_field([])
