@@ -429,5 +429,14 @@ class ImportApiResultObject(DataClassJsonMixin):
     itemsIds: Dict[str, str] = default_field({})
 
     def __post_init__(self):
-        self.importDscMap = {k: ImportDscMapItem(**v) for k, v in self.importDscMap.items()} 
+        # self.importDscMap = [for k, v in self.importDscMap.items():
+        #     k: ImportDscMapItem(**v)
+        # } 
+        result = {}
+
+        for k, v in self.importDscMap.items():
+            # v = [ImportDscMapItem]
+            result[k] = [ImportDscMapItem(**i) for i in v]
+
+        self.importDscMap = result
         self.failedItems = [RelatedItemData(**i) for i in self.failedItems]
