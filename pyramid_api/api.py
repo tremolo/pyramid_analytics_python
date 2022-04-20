@@ -614,7 +614,7 @@ class API:
                 'auth': self.token
             }
         )
-        return res['data']
+        return res
 
 
     def recognizeDataBase(self, server_id: str, db_name: str) -> ModifiedItemsResult:
