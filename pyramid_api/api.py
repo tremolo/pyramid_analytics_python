@@ -626,7 +626,7 @@ class API:
         )
         # returns {'data': '36da9e00-f31d-424c-a247-576402695fd6'}
         # connectionStringId
-        return res
+        return res['data']
 
 
     def recognizeDataBase(self, server_id: str, db_name: str) -> ModifiedItemsResult:
