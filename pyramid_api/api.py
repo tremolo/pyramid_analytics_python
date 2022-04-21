@@ -257,9 +257,9 @@ class API:
         return [ContentItem(**i) for i in res['data']]
 
 
-    def getContentItemMetadata(self, itemId: str) -> ContentItem:
+    def getContentItemMetaData(self, itemId: str) -> ContentItem:
         res = self._call_api(
-            '/API2/content/getContentItemMetadata',
+            '/API2/content/getContentItemMetaData',
             {
                 'auth': self.token,
                 'itemId': itemId
