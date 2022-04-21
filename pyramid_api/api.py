@@ -262,7 +262,7 @@ class API:
             '/API2/content/getContentItemMetadata',
             {
                 'auth': self.token,
-                'id': itemId
+                'itemId': itemId
             })
         return ContentItem(**res['data'])
 
