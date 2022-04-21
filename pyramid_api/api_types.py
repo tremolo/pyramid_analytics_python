@@ -471,8 +471,8 @@ class ImportApiResultObject(DataClassJsonMixin):
 
 @dataclass
 class ExportOptions(DataClassJsonMixin):
-    showUniqueName: bool
-    columnHeaderAsCaption: bool
+    showUniqueName: bool = True
+    columnHeaderAsCaption: bool = True
 
 @dataclass
 class FilterParameter(DataClassJsonMixin):
@@ -494,6 +494,6 @@ class ExternalParameters(DataClassJsonMixin):
 class QueryExportData(DataClassJsonMixin):
     itemId: str
     exportType: Optional[ApiResponseFormat] = ApiResponseFormat.json
-    exportOptions: Optional[ExportOptions] = None
+    exportOptions: Optional[ExportOptions] = default_field({})
     externalParameters: Optional[ExternalParameters] = None
 
