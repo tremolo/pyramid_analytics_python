@@ -500,7 +500,10 @@ class ExternalParameters(DataClassJsonMixin):
 @dataclass
 class QueryExportData(DataClassJsonMixin):
     itemId: str
-    exportType: Optional[ApiResponseFormat] = ApiResponseFormat.json
-    exportOptions: Optional[ExportOptions] = default_field({})
-    externalParameters: Optional[ExternalParameters] = default_field({})
+    exportType: Optional[ApiResponseFormat]
+    exportOptions: Optional[ExportOptions]
+    externalParameters: Optional[ExternalParameters]
+    # exportType: Optional[ApiResponseFormat] = ApiResponseFormat.json
+    # exportOptions: Optional[ExportOptions] = default_field({})
+    # externalParameters: Optional[ExternalParameters] = default_field({})
 
