@@ -326,7 +326,7 @@ class API:
             {
                 'auth': self.token,
                 'folderId': folderId
-        })
+            })
         return [ContentItem(**i) for i in res['data']]
 
     
@@ -626,7 +626,7 @@ class API:
         )
         # returns {'data': '36da9e00-f31d-424c-a247-576402695fd6'}
         # connectionStringId
-        return res.data
+        return res
 
 
     def recognizeDataBase(self, server_id: str, db_name: str) -> ModifiedItemsResult:
