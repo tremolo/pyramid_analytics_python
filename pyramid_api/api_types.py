@@ -484,11 +484,18 @@ class TargetParameter(DataClassJsonMixin):
     filters: List[FilterParameter] = default_field([])
     syntaxType: Optional[SyntaxType] = SyntaxType.pql
 
+    def __post_init__(self):
+        self.filters = [FilterParameter(**i) for i in self.filters]
+
 @dataclass
 class ExternalParameters(DataClassJsonMixin):
     reportFilters: List[FilterParameter] = default_field([])
     targets: List[TargetParameter] = default_field([])
     slideNumber: Optional[int] = 0
+
+    def __post_init__(self):
+        self.reportFilters = [FilterParameter(**i) for i in self.reportFilters]
+        self.targets = [TargetParameter(**i) for i in self.targets]
 
 @dataclass
 class QueryExportData(DataClassJsonMixin):
