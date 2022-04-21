@@ -208,12 +208,12 @@ class API:
     # --- Notifications ---
     ##
 
-    def getNotificationIndicators(self, user_id: str) -> NotificationIndicatorsResult:
+    def getNotificationIndicators(self, userId: str) -> NotificationIndicatorsResult:
         res = self._call_api(
             '/API2/notification/getNotificationIndicators',
             {
                 'auth': self.token,
-                'userId': user_id
+                'userId': userId
             })
         return NotificationIndicatorsResult(**res['data'])
 
@@ -256,30 +256,30 @@ class API:
         return [ContentItem(**i) for i in res['data']]
         
 
-    def getUserPublicRootFolder(self, user_id: str) -> ContentItem:
+    def getUserPublicRootFolder(self, userId: str) -> ContentItem:
         res = self._call_api(
             '/API2/content/getUserPublicRootFolder',
             {
                 'auth': self.token,
-                'userId': user_id
+                'userId': userId
             })
         return ContentItem(**res['data'])
 
-    def getPrivateRootFolder(self, user_id: str) -> ContentItem:
+    def getPrivateRootFolder(self, userId: str) -> ContentItem:
         res = self._call_api(
             '/API2/content/getPrivateRootFolder',
             {
                 'auth': self.token,
-                'userId': user_id
+                'userId': userId
             })
         return ContentItem(**res['data'])
 
-    def getPrivateFolderForUser(self, user_id: str) -> ContentItem:
+    def getPrivateFolderForUser(self, userId: str) -> ContentItem:
         res = self._call_api(
             '/API2/content/getPrivateFolderForUser',
             {
                 'auth': self.token,
-                'userId': user_id
+                'userId': userId
             })
         return ContentItem(**res['data'])
 
@@ -300,22 +300,21 @@ class API:
             })
         return ContentItem(**res['data'])
 
-    def getUserGroupRootFolder(self, user_id: str) -> ContentItem:
+    def getUserGroupRootFolder(self, userId: str) -> ContentItem:
         res = self._call_api(
             '/API2/content/getUserGroupRootFolder',
             {
                 'auth': self.token,
-                'userId': user_id
+                'userId': userId
             })
         return ContentItem(**res['data'])
 
-    def getFolderItems(self, user_id: str, folder_id) -> List[ContentItem]:
+    def getFolderItems(self, folderId) -> List[ContentItem]:
         res = self._call_api(
             '/API2/content/getFolderItems',
             {
                 'auth': self.token,
-                'userId': user_id,
-                'folderId': folder_id
+                'folderId': folderId
         })
         return [ContentItem(**i) for i in res['data']]
 
@@ -359,7 +358,7 @@ class API:
 
     def deleteTenants(
         self,
-        tenant_ids: List[str],
+        tenantIds: List[str],
         delete_users: bool,
         delete_servers: bool
     ) -> ModifiedItemsResult:
@@ -369,7 +368,7 @@ class API:
             {
                 'auth': self.token,
                 'data': {
-                    'tenantIds': tenant_ids,
+                    'tenantIds': tenantIds,
                     'deleteUsers': delete_users,
                     'deleteServers': delete_servers
                 }
@@ -456,15 +455,15 @@ class API:
             }
         )
 
-    def addRoleToServer(self, server_id: str, role_id: str, access_type: AccessType) -> ModifiedItemsResult:
+    def addRoleToServer(self, serverId: str, roleId: str, access_type: AccessType) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToServer',
             {
                 'auth': self.token,
                 'itemRoles': {
-                    'itemId': server_id,
+                    'itemId': serverId,
                     'itemRolePairList': [{
-                        'roleId': role_id,
+                        'roleId': roleId,
                         'accessType': access_type
                     }]
                 }
@@ -472,8 +471,8 @@ class API:
 
     def addRoleToDataBase(
         self,
-        db_id: str,
-        role_id: str,
+        databaseId: str,
+        roleId: str,
         access_type: AccessType = AccessType.read
     ) -> ModifiedItemsResult:
         return self._call_expect_modified(
@@ -481,9 +480,9 @@ class API:
             {
                 'auth': self.token,
                 'itemRoles': {
-                    'itemId': db_id,
+                    'itemId': databaseId,
                     'itemRolePairList': [{
-                        'roleId': role_id,
+                        'roleId': roleId,
                         'accessType': access_type
                     }]
                 }
@@ -491,8 +490,8 @@ class API:
 
     def addRoleToModel(
         self,
-        model_id: str,
-        role_id: str,
+        modelId: str,
+        roleId: str,
         access_type: AccessType = AccessType.read
     ) -> ModifiedItemsResult:
         return self._call_expect_modified(
@@ -500,9 +499,9 @@ class API:
             {
                 'auth': self.token,
                 'itemRoles': {
-                    'itemId': model_id,
+                    'itemId': modelId,
                     'itemRolePairList': [{
-                        'roleId': role_id,
+                        'roleId': roleId,
                         'accessType': access_type
                     }]
                 }
@@ -614,7 +613,9 @@ class API:
                 'auth': self.token
             }
         )
-        return res
+        # returns {'data': '36da9e00-f31d-424c-a247-576402695fd6'}
+        # connectionStringId
+        return res.data
 
 
     def recognizeDataBase(self, server_id: str, db_name: str) -> ModifiedItemsResult:
@@ -647,21 +648,21 @@ class API:
 
     # TODO Write Tests
 
-    def reRunTask(self, task_id: str) -> ModifiedItemsResult:
+    def reRunTask(self, taskId: str) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/tasks/reRunTask',
             {
                 'auth': self.token,
-                'taskId': task_id
+                'taskId': taskId
         })
 
-    def runSchedule(self, schedule_id: str, check_triggers=True) -> str: # id
+    def runSchedule(self, scheduleId: str, check_triggers=True) -> str: # id
         return self._call_api(
             '/API2/tasks/runSchedule',
             {
                 'auth': self.token,
                 'data':{
-                    'scheduleId': schedule_id,
+                    'scheduleId': scheduleId,
                     'checkTriggers': check_triggers
                 }
         })
