@@ -136,8 +136,28 @@ class ContentType(IntEnum):
     etlflow = 4
     folder = 5
     publisher = 6
+    server = 7
     storyboard = 8
+    document = 9
+    component = 10
+    theme = 11
+    prom = 12
+    contentview = 13
+    # there is no 14!
+    kpibandscontainer = 15
+    datasource = 16
 
+class ContentItemType(IntEnum):
+    none = 0
+    asset =1
+    server = 2
+    document = 3
+    container = 4
+    folder = 5
+    calculation = 6
+    prom = 7
+    etlflow = 8
+    customvisual = 9
 
 # NOT THE SAME AS ABOVE!?!?!?!?
 class ContentItemObjectType(IntEnum):
@@ -146,7 +166,6 @@ class ContentItemObjectType(IntEnum):
     storyboard = 2
     calculation = 3
     datadiscovery = 4
-
 
 class MaterializedItemType(IntEnum):
     none = 0
@@ -179,6 +198,19 @@ class ValidRootFolderType(IntEnum):
     public = 1
     group = 2
 
+
+class ApiResponseFormat(IntEnum):
+    json = 0
+    xml = 1
+    csv = 2
+    odata = 3
+    odata_metadata = 4
+    odata_db_level = 5
+
+class SyntaxType(IntEnum):
+    pql = 0
+    ms = 1
+    bw = 2
 
 @dataclass
 class ItemId(DataClassJsonMixin):
@@ -330,7 +362,7 @@ class ContentItem(DataClassJsonMixin):
     id: Optional[str]
     parentId: Optional[str]
     caption: Optional[str]
-    itemType: Optional[int]
+    itemType: Optional[ContentItemType]
     contentType: Optional[ContentType]
     createdBy: Optional[str] = None
     createdDate: Optional[int] = None
@@ -436,3 +468,32 @@ class ImportApiResultObject(DataClassJsonMixin):
 
         self.importDscMap = result
         self.failedItems = [RelatedItemData(**i) for i in self.failedItems]
+
+@dataclass
+class ExportOptions(DataClassJsonMixin):
+    showUniqueName: bool
+    columnHeaderAsCaption: bool
+
+@dataclass
+class FilterParameter(DataClassJsonMixin):
+    value: str
+
+@dataclass
+class TargetParameter(DataClassJsonMixin):
+    name: str
+    filters: List[FilterParameter] = default_field([])
+    syntaxType: Optional[SyntaxType] = SyntaxType.pql
+
+@dataclass
+class ExternalParameters(DataClassJsonMixin):
+    reportFilters: List[FilterParameter] = default_field([])
+    targets: List[TargetParameter] = default_field([])
+    slideNumber: Optional[int] = 0
+
+@dataclass
+class QueryExportData(DataClassJsonMixin):
+    itemId: str
+    exportType: Optional[ApiResponseFormat] = ApiResponseFormat.json
+    exportOptions: Optional[ExportOptions] = None
+    externalParameters: Optional[ExternalParameters] = None
+

@@ -27,6 +27,7 @@ from .api_types import (
     NewFolder,
     NewTenant,
     PieApiObject,
+    QueryExportData,
     User,
     Role,
     SearchParams,
@@ -254,7 +255,17 @@ class API:
                 'searchParams': self.__ignore_nulls(asdict(params))
             })
         return [ContentItem(**i) for i in res['data']]
-        
+
+
+    def getContentItemMetadata(self, itemId: str) -> ContentItem:
+        res = self._call_api(
+            '/API2/content/getContentItemMetadata',
+            {
+                'auth': self.token,
+                'itemId': itemId
+            })
+        return ContentItem(**res['data'])
+
 
     def getUserPublicRootFolder(self, userId: str) -> ContentItem:
         res = self._call_api(
@@ -666,3 +677,16 @@ class API:
                     'checkTriggers': check_triggers
                 }
         })
+
+    ##
+    # --- Query ---
+    ##
+
+    def extractQueryResult(self, query: QueryExportData) -> str:
+        res = self._call_api(
+            '/API2/query/extractQueryResult',
+            {
+                'auth': self.token,
+                'data': query
+            })
+        return res.data
