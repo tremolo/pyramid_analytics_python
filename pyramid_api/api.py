@@ -682,11 +682,11 @@ class API:
     # --- Query ---
     ##
 
-    def extractQueryResult(self, query) -> str:
+    def extractQueryResult(self, queryData: QueryExportData) -> str:
         res = self._call_api(
             '/API2/query/extractQueryResult',
             {
                 'auth': self.token,
-                'data': query
+                'data':  self.__ignore_nulls(asdict(queryData))
             })
         return res.data
