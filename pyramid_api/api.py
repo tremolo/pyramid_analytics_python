@@ -689,4 +689,4 @@ class API:
                 'auth': self.token,
                 'data':  self.__ignore_nulls(asdict(queryData))
             })
-        return res.data
+        return res['data']
