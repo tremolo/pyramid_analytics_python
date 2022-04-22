@@ -682,7 +682,7 @@ class API:
     # --- Query ---
     ##
 
-    def extractQueryResult(self, query: QueryExportData) -> str:
+    def extractQueryResult(self, query) -> str:
         res = self._call_api(
             '/API2/query/extractQueryResult',
             {
