@@ -35,6 +35,7 @@ from .api_types import (
     Server,
     TenantData,
     ValidRootFolderType,
+    MasterFlowValidationResult
 )
 
 LOG = logging.getLogger(__name__)
@@ -166,6 +167,16 @@ class API:
         )
         return [User(**i) for i in res['data']]
 
+    ## identity ---
+
+    def getMe(self) -> User: # user_id
+        res = self._call_api(
+            '/API2/access/getMe',
+            {
+                'auth': self.token
+            })
+        return User(**res['data'])
+
     ##
     # --- Auth ---
     ##
@@ -192,18 +203,6 @@ class API:
             self.getMe()
         except HTTPError as err:
             raise APIException('Invalid Token') from err
-
-    ##
-    # --- Identity ---
-    ##
-
-    def getMe(self) -> User: # user_id
-        res = self._call_api(
-            '/API2/access/getMe',
-            {
-                'auth': self.token
-            })
-        return User(**res['data'])
 
     ##
     # --- Notifications ---
@@ -329,7 +328,26 @@ class API:
             })
         return [ContentItem(**i) for i in res['data']]
 
-    
+    def addRoleToItem(
+        self,
+        folderId: str,
+        roleId: str,
+        accessType: AccessType = AccessType.read,
+        propagateRoles: bool = False
+        ) -> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/content/addRoleToItem',
+            {
+                'auth': self.token,
+                'roleToItemApiData': {
+                    'itemId': folderId,
+                    'roleId': roleId,
+                    'accessType': accessType,
+                    'propagateRoles': propagateRoles
+
+                }
+        })
+
     def importContent(self, obj: PieApiObject) -> ImportApiResultObject:
         res = self._call_api(
             '/API2/content/importContent', {
@@ -339,11 +357,7 @@ class API:
         )
         return ImportApiResultObject(**res['data'])
 
-    ##
-    # --- Management ---
-    ##
-
-    ## Tenant
+    # Tenant
 
     def createTenant(
         self,
@@ -445,6 +459,8 @@ class API:
         )
 
 
+    ## dataSources
+    
     ## Server
     def createDataServer(self, server: Server) -> ModifiedItemsResult:
         return self._call_expect_modified(
@@ -518,26 +534,6 @@ class API:
                 }
         })
 
-
-    def addRoleToItem(
-        self,
-        folderId: str,
-        roleId: str,
-        accessType: AccessType = AccessType.read,
-        propagateRoles: bool = False
-        ) -> ModifiedItemsResult:
-        return self._call_expect_modified(
-            '/API2/content/addRoleToItem',
-            {
-                'auth': self.token,
-                'roleToItemApiData': {
-                    'itemId': folderId,
-                    'roleId': roleId,
-                    'accessType': accessType,
-                    'propagateRoles': propagateRoles
-
-                }
-        })
     
 
     def changeDataSource(self, oldConnection: str, newConnection: str, itemId: str) -> ModifiedItemsResult:
@@ -640,7 +636,6 @@ class API:
                 }
         })
 
-
     def deleteDataBase(
         self,
         databaseId: str
@@ -650,6 +645,78 @@ class API:
             {
                 'auth': self.token,
                 'databaseId': databaseId
+            }
+        )
+
+    def validateMasterFlow(
+        self,
+        itemId: str,
+        executionTitle: str
+    ) -> MasterFlowValidationResult:   
+        res =  self._call_api(
+            '/API2/dataSources/validateMasterFlow',
+            {
+                'auth': self.token,
+                'itemId': itemId,
+                'executionTitle': executionTitle
+            }
+        )
+        return MasterFlowValidationResult(**res['data'])
+
+    def updateSourceNodeConnection(
+        self,
+        dataFlowNodeId: str,
+        itemId: str,
+        serverId: str = None,
+        databaseName: str = None
+    ) -> ModifiedItemsResult:    
+        return self._call_expect_modified(
+            '/API2/dataSources/updateSourceNodeConnection',
+            {
+                'auth': self.token,
+                'dataFlowNodeId': dataFlowNodeId,
+                'serverId': serverId,
+                'databaseName': databaseName,
+                'itemId': itemId,
+            }
+        )
+
+    def updateTargetNodeConnection(
+        self,
+        dataFlowNodeId: str,
+        itemId: str,
+        serverId: str = None,
+        databaseName: str = None,
+        useExistingDatabase: bool = True
+    ) -> ModifiedItemsResult:    
+        return self._call_expect_modified(
+            '/API2/dataSources/updateTargetNodeConnection',
+            {
+                'auth': self.token,
+                'dataFlowNodeId': dataFlowNodeId,
+                'serverId': serverId,
+                'databaseName': databaseName,
+                'useExistingDatabase': useExistingDatabase,
+                'itemId': itemId,
+            }
+        )
+
+
+    def updateVariableConnection(
+        self,
+        dataFlowNodeId: str,
+        variableName: str,
+        serverId: str = None,
+        databaseName: str = None
+    ) -> ModifiedItemsResult:    
+        return self._call_expect_modified(
+            '/API2/dataSources/updateVariableConnection',
+            {
+                'auth': self.token,
+                'dataFlowNodeId': dataFlowNodeId,
+                'serverId': serverId,
+                'databaseName': databaseName,
+                'variableName': variableName,
             }
         )
 

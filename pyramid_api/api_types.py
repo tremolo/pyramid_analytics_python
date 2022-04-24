@@ -504,3 +504,67 @@ class QueryExportData(DataClassJsonMixin):
     exportOptions: Optional[ExportOptions] = None
     externalParameters: Optional[ExternalParameters] = None
 
+@dataclass
+class MasterFlowSourceObject(DataClassJsonMixin):
+    masterFlowNodeId: str
+    masterFlowNodeName: str
+    dataFlowNodeId: str
+    description: str
+    serverId: str
+    serverName: str
+    serverType: ServerType
+    databaseName: str
+    validationMessage: str
+
+@dataclass
+class MasterFlowTargetObject(DataClassJsonMixin):
+    masterFlowNodeId: str
+    masterFlowNodeName: str
+    dataFlowNodeId: str
+    description: str
+    serverId: str
+    serverName: str
+    serverType: ServerType
+    createNewDb: bool
+    databaseName: str
+    validationMessage: str
+
+@dataclass
+class MasterFlowOtherObject(DataClassJsonMixin):
+    masterFlowNodeId: str
+    masterFlowNodeName: str
+    dataFlowNodeId: str
+    dataFlowNodeType: str
+    dataFlowNodeName: str
+    description: str
+    validationMessage: str
+
+@dataclass
+class MasterFlowVariableObject(DataClassJsonMixin):
+    masterFlowNodeId: str
+    masterFlowNodeName: str
+    dataFlowNodeId: str
+    description: str
+    serverId: str
+    serverName: str
+    serverType: ServerType
+    databaseName: str
+    validationMessage: str
+    variableCurrentValue: str
+    variableDataType: str
+    variableType: str
+
+@dataclass
+class MasterFlowValidationResult(DataClassJsonMixin):
+    sources: List[MasterFlowSourceObject]
+    targets: List[MasterFlowTargetObject]
+    others: List[MasterFlowOtherObject]
+    variables: List[MasterFlowVariableObject]
+
+    def __post_init__(self):
+        self.sources = [MasterFlowSourceObject(**i) for i in self.sources]
+        self.targets = [MasterFlowTargetObject(**i) for i in self.targets]
+        self.others = [MasterFlowOtherObject(**i) for i in self.others]
+        self.variables = [MasterFlowVariableObject(**i) for i in self.variables]
+
+
