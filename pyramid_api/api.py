@@ -486,6 +486,15 @@ class API:
                 'auth': self.token,
                 'serverData': self.__ignore_nulls(asdict(server))
         })
+    
+    def getServerDataById(self, dataServerId: str) -> Server:
+        res = self._call_api(
+            '/API2/dataSources/getServerDataById',
+            {
+                'auth': self.token,
+                'dataServerId': dataServerId
+        })
+        return Server(**res['data'])
 
     def deleteDataSource(
         self,
