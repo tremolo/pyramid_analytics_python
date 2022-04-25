@@ -363,14 +363,14 @@ class ContentItem(DataClassJsonMixin):
     parentId: Optional[str]
     caption: Optional[str]
     itemType: Optional[ContentItemType]
-    contentType: Optional[ContentType]
     createdBy: Optional[str] = None
     createdDate: Optional[int] = None
     version: Optional[str] = None
     modifiedDate: Optional[str] = None
-    tenantId: Optional[str] = None
     description: Optional[str] = None
-
+    tenantId: Optional[str] = None
+    contentType: Optional[ContentType] = None
+    isDeleted: bool = False
 
 @dataclass
 class ModifiedItemsResult(DataClassJsonMixin):
