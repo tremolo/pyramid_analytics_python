@@ -143,6 +143,23 @@ class API:
     def __ignore_nulls(self, d: Dict):
         return {k: v for k, v in d.items() if v != None}
 
+    # to call any API that has not been explicitly defined
+    # you can add an explicit API method later :-)
+    #
+    # api.generic('/API2/access/getUsersByName', {
+    #   itemId:'abcd'
+    # })
+    def generic(self, apiName: str, parameters: Dict) -> Any:
+        allParameters = {
+            'auth': self.token
+        }
+        allParameters.update(parameters)
+        res = self._call_api(
+            apiName,
+            parameters
+        )
+        return res['data']
+
     ##
     # --- Access ---
     ##
