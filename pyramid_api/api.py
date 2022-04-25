@@ -33,6 +33,7 @@ from .api_types import (
     SearchParams,
     SearchMatchType,
     Server,
+    ServerDetails,
     TenantData,
     ValidRootFolderType,
     MasterFlowValidationResult
@@ -511,7 +512,7 @@ class API:
                 'auth': self.token,
                 'dataServerId': dataServerId
         })
-        return Server(**res['data'])
+        return ServerDetails(**res['data'])
 
     def deleteDataSource(
         self,

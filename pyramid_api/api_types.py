@@ -279,6 +279,10 @@ class Server(DataClassJsonMixin):
     defaultDatabaseName: Optional[str] = None
     overlayPyramidSecurity: bool = False
     serverIpAndInstanceName: Optional[str] = None
+
+
+@dataclass
+class ServerDetails(Server):
     inheritanceType: Optional[str] = 'ServerData'
 
 
