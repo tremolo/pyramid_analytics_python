@@ -253,6 +253,10 @@ class User(DataClassJsonMixin):
     inheritanceType: Optional[str] = None
     secondaryMobilePhone: Optional[str] = None
 
+@dataclass
+class WriteCapability(IntEnum):
+    Read = 0
+    Write = 1
 
 @dataclass
 class Server(DataClassJsonMixin):
@@ -262,7 +266,7 @@ class Server(DataClassJsonMixin):
     serverType: ServerType = 0
     serverIp: Optional[str] = None
     instanceName: Optional[str] = None
-    writeCapable: int = 0
+    writeCapable: Optional[WriteCapability] = WriteCapability.Read
     optionalParameters: Optional[str] = None
     securedByUser: bool = False
     serverAuthenticationMethod: ServerAuthenticationMethod = 0
@@ -275,6 +279,7 @@ class Server(DataClassJsonMixin):
     defaultDatabaseName: Optional[str] = None
     overlayPyramidSecurity: bool = False
     serverIpAndInstanceName: Optional[str] = None
+    inheritanceType: Optional[str] = 'ServerData'
 
 
 @dataclass
