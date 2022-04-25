@@ -253,7 +253,6 @@ class User(DataClassJsonMixin):
     inheritanceType: Optional[str] = None
     secondaryMobilePhone: Optional[str] = None
 
-@dataclass
 class WriteCapability(IntEnum):
     Read = 0
     Write = 1
@@ -269,7 +268,7 @@ class Server(DataClassJsonMixin):
     writeCapable: Optional[WriteCapability] = WriteCapability.Read
     optionalParameters: Optional[str] = None
     securedByUser: bool = False
-    serverAuthenticationMethod: ServerAuthenticationMethod = 0
+    serverAuthenticationMethod: Optional[ServerAuthenticationMethod] = ServerAuthenticationMethod.userpassword
     userName: Optional[str] = None
     password: Optional[str] = None
     tenantId: Optional[str] = None
@@ -277,7 +276,7 @@ class Server(DataClassJsonMixin):
     useGlobalAccount: bool = False
     pulseClient: Optional[str] = None
     defaultDatabaseName: Optional[str] = None
-    overlayPyramidSecurity: bool = False
+    overlayPyramidSecurity: Optional[bool] = False
     serverIpAndInstanceName: Optional[str] = None
 
 
