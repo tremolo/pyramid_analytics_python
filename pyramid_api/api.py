@@ -371,8 +371,15 @@ class API:
                 'tenant': asdict(tenant)
         })
 
+    def getAllTenants(self) -> List[TenantData]:
+        res = self._call_api(
+            '/API2/access/getAllTenants',
+            {
+                'auth': self.token
+        })
+        return TenantData(**res['data'])
 
-    def getTenantByName(self, name: str) -> TenantData:
+    def getTenantByName(self, name: str) -> List[TenantData]:
         res = self._call_api(
             '/API2/access/getTenantByName',
             {
@@ -380,6 +387,16 @@ class API:
                 'tenantName': name
         })
         return TenantData(**res['data'])
+
+    def getDefaultTenant(
+        self
+    ) -> str:
+        res = self._call_api(
+            '/API2/access/getDefaultTenant',
+            {
+                'auth': self.token
+            })
+        return res['data']
 
     def deleteTenants(
         self,
