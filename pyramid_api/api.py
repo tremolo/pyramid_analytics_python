@@ -650,17 +650,17 @@ class API:
 
     def validateMasterFlow(
         self,
-        itemId: str
+        itemId: str,
+        executionTitle: str = 'validation'
     ) -> MasterFlowValidationResult:   
-    # ,
-    #     executionTitle: str = None
         res =  self._call_api(
             '/API2/dataSources/validateMasterFlow',
             {
                 'auth': self.token,
-                'itemId': itemId
-                # ,
-                # 'executionTitle': executionTitle
+                'validateMasterFlowObject': {
+                    'itemId': itemId,
+                    'executionTitle': executionTitle
+                }
             }
         )
         return MasterFlowValidationResult(**res['data'])
