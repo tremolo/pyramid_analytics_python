@@ -156,7 +156,7 @@ class API:
         allParameters.update(parameters)
         res = self._call_api(
             apiName,
-            parameters
+            allParameters
         )
         return res['data']
 
