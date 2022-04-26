@@ -212,6 +212,29 @@ class SyntaxType(IntEnum):
     ms = 1
     bw = 2
 
+class WriteCapability(IntEnum):
+    Read = 0
+    Write = 1
+
+class ClashDefaultOption(IntEnum):
+    REPLACE_FILE = 1
+    # Need:
+    # NEW
+    # SKIP
+
+class RootFolderType(IntEnum):
+    private = 0
+    public = 1
+    group = 2
+    oneoff = 3
+    privatedummy = 4
+    tenantsrootfolderdummy = 5
+    tenantdummy = 6
+    deletedcontent = 7
+    crosstenant = 8
+    recent = 9
+    favorites = 10
+
 @dataclass
 class ItemId(DataClassJsonMixin):
     id: str
@@ -234,7 +257,7 @@ class User(DataClassJsonMixin):
     tenantId: str
     userName: str
     roleIds: List[str] = default_field([])
-    clientLicenseType: ClientLicenseType = 0
+    clientLicenseType: ClientLicenseType = ClientLicenseType.none
     id: str = None
     firstName: Optional[str] = None
     lastName: Optional[str] = None
@@ -253,16 +276,12 @@ class User(DataClassJsonMixin):
     inheritanceType: Optional[str] = None
     secondaryMobilePhone: Optional[str] = None
 
-class WriteCapability(IntEnum):
-    Read = 0
-    Write = 1
-
 @dataclass
 class Server(DataClassJsonMixin):
     port: int
     serverName: str
     id: Optional[str] = None
-    serverType: ServerType = 0
+    serverType: ServerType = ServerType.none
     serverIp: Optional[str] = None
     instanceName: Optional[str] = None
     writeCapable: Optional[WriteCapability] = WriteCapability.Read
@@ -359,7 +378,7 @@ class ConnectionStringProperties(DataClassJsonMixin):
     serverName: Optional[str] = None
     dataBaseId: Optional[str] = None
     dataBaseName: Optional[str] = None
-    connectionStringType: Optional[ServerType] = 0
+    connectionStringType: Optional[ServerType] = ServerType.none
     isDynamicModel: Optional[bool] = False
     modelParamsStatus: Optional[str] = None
     securityHash: Optional[str] = None
@@ -391,14 +410,14 @@ class ModifiedItemsResult(DataClassJsonMixin):
 class MaterializedItemObject(DataClassJsonMixin):
     itemId: str
     itemCaption: str = None
-    itemType: MaterializedItemType = 0
+    itemType: MaterializedItemType = MaterializedItemType.none
 
 
 @dataclass
 class PieApiObject(DataClassJsonMixin):
     rootFolderId: str
     fileZippedData: str # base64 encoded string of the file
-    clashDefaultOption: int = 1
+    clashDefaultOption: int = ClashDefaultOption.REPLACE_FILE
     rolesAssignmentType: RoleAssignmentType = RoleAssignmentType.forceparentroles
     roleIds: List[str] = None  # only relevent to RoleAssignmentType.ForceExternalRoles
 
@@ -408,19 +427,6 @@ class PieApiObject(DataClassJsonMixin):
             bytes_ =  f.read()
             return bytes_.decode('ascii') 
 
-@dataclass
-class RootFolderType(IntEnum):
-    private = 0
-    public = 1
-    group = 2
-    oneoff = 3
-    privatedummy = 4
-    tenantsrootfolderdummy = 5
-    tenantdummy = 6
-    deletedcontent = 7
-    crosstenant = 8
-    recent = 9
-    favorites = 10
 
 @dataclass
 class ConnectionStringData(DataClassJsonMixin):
