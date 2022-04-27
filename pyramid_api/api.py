@@ -228,7 +228,7 @@ class API:
         except HTTPError as err:
             raise APIException('Invalid Token') from err
         # new API object for the new user
-        return self(TokenGrant(domain = self.domain, token = userToken))
+        return API(TokenGrant(domain = self.domain, token = userToken))
 
     def validate_grant(self, credential: TokenGrant):
         self.domain = credential.domain
