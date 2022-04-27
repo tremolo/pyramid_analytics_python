@@ -542,7 +542,7 @@ class API:
             }
         )
 
-    def addRoleToServer(self, serverId: str, roleId: str, access_type: AccessType) -> ModifiedItemsResult:
+    def addRoleToServer(self, serverId: str, roleId: str, accessType: AccessType) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToServer',
             {
@@ -551,7 +551,7 @@ class API:
                     'itemId': serverId,
                     'itemRolePairList': [{
                         'roleId': roleId,
-                        'accessType': access_type
+                        'accessType': accessType
                     }]
                 }
         })
@@ -560,7 +560,7 @@ class API:
         self,
         databaseId: str,
         roleId: str,
-        access_type: AccessType = AccessType.read
+        accessType: AccessType = AccessType.read
     ) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToDataBase',
@@ -570,7 +570,7 @@ class API:
                     'itemId': databaseId,
                     'itemRolePairList': [{
                         'roleId': roleId,
-                        'accessType': access_type
+                        'accessType': accessType
                     }]
                 }
         })
@@ -579,7 +579,7 @@ class API:
         self,
         modelId: str,
         roleId: str,
-        access_type: AccessType = AccessType.read
+        accessType: AccessType = AccessType.read
     ) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToDataBase',
@@ -589,7 +589,7 @@ class API:
                     'itemId': modelId,
                     'itemRolePairList': [{
                         'roleId': roleId,
-                        'accessType': access_type
+                        'accessType': accessType
                     }]
                 }
         })
