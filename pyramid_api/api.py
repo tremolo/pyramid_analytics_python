@@ -36,7 +36,8 @@ from .api_types import (
     ServerDetails,
     TenantData,
     ValidRootFolderType,
-    MasterFlowValidationResult
+    MasterFlowValidationResult,
+    ItemRolePair
 )
 
 LOG = logging.getLogger(__name__)
@@ -378,7 +379,6 @@ class API:
                     'roleId': roleId,
                     'accessType': accessType,
                     'propagateRoles': propagateRoles
-
                 }
         })
 
@@ -542,26 +542,27 @@ class API:
             }
         )
 
-    def addRoleToServer(self, serverId: str, roleId: str, accessType: AccessType) -> ModifiedItemsResult:
+    def addRolesToServer(self, serverId: str, rolesAndAccess: List[ItemRolePair]) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToServer',
             {
                 'auth': self.token,
                 'itemRoles': {
                     'itemId': serverId,
-                    'serverId': serverId,
-                    'itemRolePairList': [{
-                        'roleId': roleId,
-                        'accessType': accessType
-                    }]
+                    # 'serverId': serverId,
+                    'itemRolePairList': rolesAndAccess
+                    # [
+                    #     ItemRolePair(roleId, accessType)
+                    # ]
                 }
         })
 
-    def addRoleToDataBase(
+    def addRolesToDataBase(
         self,
         databaseId: str,
-        roleId: str,
-        accessType: AccessType = AccessType.read
+        rolesAndAccess: List[ItemRolePair]
+        # roleId: str,
+        # accessType: AccessType = AccessType.read
     ) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToDataBase',
@@ -569,19 +570,20 @@ class API:
                 'auth': self.token,
                 'itemRoles': {
                     'itemId': databaseId,
-                    'databaseId': databaseId,
-                    'itemRolePairList': [{
-                        'roleId': roleId,
-                        'accessType': accessType
-                    }]
+                    # 'databaseId': databaseId,
+                    'itemRolePairList': rolesAndAccess
+                    # [
+                    #     ItemRolePair(roleId, accessType)
+                    # ]
                 }
         })
 
-    def addRoleToModel(
+    def addRolesToModel(
         self,
         modelId: str,
-        roleId: str,
-        accessType: AccessType = AccessType.read
+        rolesAndAccess: List[ItemRolePair]
+        # roleId: str,
+        # accessType: AccessType = AccessType.read
     ) -> ModifiedItemsResult:
         return self._call_expect_modified(
             '/API2/dataSources/addRolesToDataBase',
@@ -589,11 +591,54 @@ class API:
                 'auth': self.token,
                 'itemRoles': {
                     'itemId': modelId,
-                    'modelId': modelId,
-                    'itemRolePairList': [{
-                        'roleId': roleId,
-                        'accessType': accessType
-                    }]
+                    # 'modelId': modelId,
+                    'itemRolePairList': rolesAndAccess
+                    # [
+                    #     ItemRolePair(roleId, accessType)
+                    # ]
+                }
+        })
+
+    def addRolesToModelAndBubbleUp(
+        self,
+        modelId: str,
+        rolesAndAccess: List[ItemRolePair]
+        # roleId: str,
+        # accessType: AccessType = AccessType.read
+    ) -> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/dataSources/addRolesToItemAndBubbleUp',
+            {
+                'auth': self.token,
+                'itemRoles': {
+                    'itemId': modelId,
+                    # 'modelId': modelId,
+                    'itemRolePairList': rolesAndAccess
+                    # [
+                    #     ItemRolePair(roleId, accessType)
+                    # ]
+                }
+        })
+
+
+    def addRolesToServerAndPropagate(
+        self,
+        serverId: str,
+        rolesAndAccess: List[ItemRolePair]
+        # roleId: str,
+        # accessType: AccessType = AccessType.read
+    ) -> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/dataSources/addRolesToItemAndPropagate',
+            {
+                'auth': self.token,
+                'itemRoles': {
+                    'itemId': serverId,
+                    # 'serverId': serverId,
+                    'itemRolePairList': rolesAndAccess
+                    # [
+                    #     ItemRolePair(roleId, accessType)
+                    # ]
                 }
         })
 

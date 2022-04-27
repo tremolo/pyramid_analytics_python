@@ -251,6 +251,10 @@ class Role(DataClassJsonMixin):
     isPrivate: bool = False
     isGroupRole: bool = False
     
+@dataclass
+class ItemRolePair(DataClassJsonMixin):
+    roleId: str
+    accessType: AccessType = AccessType.none
 
 @dataclass
 class User(DataClassJsonMixin):
