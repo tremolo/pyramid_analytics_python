@@ -301,6 +301,16 @@ class API:
         return ContentItem(**res['data'])
 
 
+    def getContentItemSecurityRoles(self, itemId: str) -> List[Role]:
+        res = self._call_api(
+            '/API2/content/getContentItemSecurityRoles',
+            {
+                'auth': self.token,
+                'contentItemId': itemId
+            })
+        return [Role(**i) for i in res['data']]
+
+
     def getUserPublicRootFolder(self, userId: str) -> ContentItem:
         res = self._call_api(
             '/API2/content/getUserPublicRootFolder',
