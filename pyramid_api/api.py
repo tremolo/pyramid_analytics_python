@@ -217,7 +217,7 @@ class API:
     def authenticateAs(self, userIdentity: str):
         try:
             userToken = self._call_api(
-                '/API2/auth/authenticateUserEmbedByToken',
+                '/API2/auth/authenticateUserByToken',
                 {
                     'data': {
                         'userIdentity': userIdentity,
