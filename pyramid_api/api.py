@@ -550,7 +550,7 @@ class API:
                 'itemRoles': {
                     'itemId': serverId,
                     # 'serverId': serverId,
-                    'itemRolePairList': rolesAndAccess
+                    'itemRolePairList': [self.__ignore_nulls(asdict(i)) for i in rolesAndAccess]
                     # [
                     #     ItemRolePair(roleId, accessType)
                     # ]
@@ -571,7 +571,7 @@ class API:
                 'itemRoles': {
                     'itemId': databaseId,
                     # 'databaseId': databaseId,
-                    'itemRolePairList': rolesAndAccess
+                    'itemRolePairList': [self.__ignore_nulls(asdict(i)) for i in rolesAndAccess]
                     # [
                     #     ItemRolePair(roleId, accessType)
                     # ]
@@ -592,7 +592,7 @@ class API:
                 'itemRoles': {
                     'itemId': modelId,
                     # 'modelId': modelId,
-                    'itemRolePairList': rolesAndAccess
+                    'itemRolePairList': [self.__ignore_nulls(asdict(i)) for i in rolesAndAccess]
                     # [
                     #     ItemRolePair(roleId, accessType)
                     # ]
@@ -613,7 +613,7 @@ class API:
                 'itemRoles': {
                     'itemId': modelId,
                     # 'modelId': modelId,
-                    'itemRolePairList': rolesAndAccess
+                    'itemRolePairList': [self.__ignore_nulls(asdict(i)) for i in rolesAndAccess]
                     # [
                     #     ItemRolePair(roleId, accessType)
                     # ]
@@ -635,7 +635,7 @@ class API:
                 'itemRoles': {
                     'itemId': serverId,
                     # 'serverId': serverId,
-                    'itemRolePairList': rolesAndAccess
+                    'itemRolePairList': [self.__ignore_nulls(asdict(i)) for i in rolesAndAccess]
                     # [
                     #     ItemRolePair(roleId, accessType)
                     # ]
