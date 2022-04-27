@@ -548,6 +548,7 @@ class API:
             {
                 'auth': self.token,
                 'itemRoles': {
+                    'itemId': serverId,
                     'serverId': serverId,
                     'itemRolePairList': [{
                         'roleId': roleId,
@@ -567,6 +568,7 @@ class API:
             {
                 'auth': self.token,
                 'itemRoles': {
+                    'itemId': databaseId,
                     'databaseId': databaseId,
                     'itemRolePairList': [{
                         'roleId': roleId,
@@ -586,6 +588,7 @@ class API:
             {
                 'auth': self.token,
                 'itemRoles': {
+                    'itemId': modelId,
                     'modelId': modelId,
                     'itemRolePairList': [{
                         'roleId': roleId,
