@@ -365,7 +365,7 @@ class API:
 
     def addRoleToItem(
         self,
-        folderId: str,
+        itemId: str,
         roleId: str,
         accessType: AccessType = AccessType.read,
         propagateRoles: bool = False
@@ -375,7 +375,7 @@ class API:
             {
                 'auth': self.token,
                 'roleToItemApiData': {
-                    'itemId': folderId,
+                    'itemId': itemId,
                     'roleId': roleId,
                     'accessType': accessType,
                     'propagateRoles': propagateRoles
