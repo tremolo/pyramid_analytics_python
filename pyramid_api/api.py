@@ -214,6 +214,22 @@ class API:
         except HTTPError as err:
             raise APIException('Invalid Credentials') from err
 
+    def authenticateAs(self, userIdentity: str):
+        try:
+            userToken = self._call_api(
+                '/API2/auth/authenticateUserEmbedByToken',
+                {
+                    'data': {
+                        'userIdentity': userIdentity,
+                        'token': self.token
+                    }
+                }
+            )
+        except HTTPError as err:
+            raise APIException('Invalid Token') from err
+        # new API object for the new user
+        return self(TokenGrant(domain = self.domain, token = userToken))
+
     def validate_grant(self, credential: TokenGrant):
         self.domain = credential.domain
         self.token = credential.token
