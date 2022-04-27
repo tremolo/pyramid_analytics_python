@@ -256,6 +256,12 @@ class ItemRolePair(DataClassJsonMixin):
     roleId: str
     accessType: AccessType = AccessType.none
 
+    def as_dict(self):
+        return {
+            'roleId': self.roleId,
+            'accessType': self.accessType.value
+        }
+
 @dataclass
 class User(DataClassJsonMixin):
     tenantId: str
