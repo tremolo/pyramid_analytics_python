@@ -186,6 +186,37 @@ class API:
         )
         return [User(**i) for i in res['data']]
 
+    def addUserToRole(self, userId: str, roleId: str)-> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/access/addUserToRole', {
+                'auth': self.token,
+                'addUserRoleData': {
+                    'userId': userId,
+                    'roleId': roleId
+                }
+            }
+        )
+
+    def addUsersToRole(self, userIds: List[str], roleId: str)-> ModifiedItemsResult:
+        return self._call_expect_modified(
+            '/API2/access/addUsersToRole', {
+                'auth': self.token,
+                'addUsersRoleData': {
+                    'userIds': userIds,
+                    'roleId': roleId
+                }
+            }
+        )
+        # res = self._call_api(
+        #     '/API2/access/getUsersByRole',
+        #     {
+        #         'auth': self.token,
+        #         'roleId': roleId
+        #     }
+        # )
+        # return [User(**i) for i in res['data']]
+        
+        
     ## identity ---
 
     def getMe(self) -> User: # user_id
