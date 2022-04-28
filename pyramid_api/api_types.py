@@ -250,6 +250,7 @@ class Role(DataClassJsonMixin):
     isHidden: bool = False
     isPrivate: bool = False
     isGroupRole: bool = False
+    createdBy: str = None
     
 @dataclass
 class ItemRolePair(DataClassJsonMixin):
