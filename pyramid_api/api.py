@@ -244,7 +244,7 @@ class API:
                 }
             )
         except HTTPError as err:
-            raise APIException('Invalid Credentials') from err
+            raise err
 
     def authenticateAs(self, userIdentity: str):
         try:
@@ -258,7 +258,7 @@ class API:
                 }
             )
         except HTTPError as err:
-            raise APIException('Invalid Token') from err
+            raise err
         # new API object for the new user
         return API(TokenGrant(domain = self.domain, token = userToken))
 
